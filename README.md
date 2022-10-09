@@ -11,3 +11,12 @@ At the same time, by supplementing these solutions with a developed mathematical
 - Different accelerations when moving in different directions
 - Friction and weight of the tool holder
 - Using 2-4 steppers
+- Automatic binding to the working plane and determination of parameters by solving a system of nonlinear equations
+
+Also, within the  project, we will try to develop a number of designs that allow us to realize the inherent capabilities and build our own cable plotter and develop software to manage it. 
+
+The main tasks of the software should be:
+- Automatic (semi-automatic) binding of the working plane
+- Definition and setting of image application (printing) parameters
+- Image layout on the working plane
+- Pre-processing of images for application
