@@ -10,3 +10,4 @@ At the same time, by supplementing these solutions with a developed mathematical
 - Stretching and deflection of cables
 - Different accelerations when moving in different directions
 - Friction and weight of the tool holder
+- Using 2-4 steppers
