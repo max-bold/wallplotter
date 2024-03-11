@@ -152,12 +152,33 @@ class planer(object):
 
     def plan(
         self,
-        length,
+        length: float,
         vin: float = 0,
         vout: float = 0,
         plotter: callable = None,
         resetonoscil=False,
     ):
+        """Calculates movement plan - a list of 7 time intervals, describing the movement.
+
+        Args:
+            length (float): Distance to move, m
+            vin (float, optional): Speed at start point, m/s. Defaults to 0.
+            vout (float, optional): Speed at end point, m/s. Defaults to 0.
+            plotter (callable, optional): Function to call on every loop. Defaults to None. Usefull for debuging. Parameters are:
+                t: current time list
+                i: Solution step
+                epos: current position error
+                espeed: current speed error
+                sumt: total treep time (calculated)
+                rms: RMS error+time (see planer.calcerrors)
+                ptime: time from solving started
+            resetonoscil (bool, optional): If True solution will be rastarted on oscillation. Usefull for very small distances. Defaults to False.
+
+        Returns:
+            t (list[Float]): List of 7 time intervals, describing the movement
+            i (int): number of iterations needed to find solution
+            time (float): Time needed to find solution, s
+        """
         t = [0, 0, 0, 0, 0, 0, 0]
         i = 0
         epos = length
@@ -187,7 +208,7 @@ class planer(object):
                 osccounter = 0
                 if resetonoscil:
                     t = [0, 0, 0, 0, 0, 0, 0]
-                    print('Restarting')
+                    print("Restarting")
 
             if epos > self.postarget:
                 # Rise jerk time
