@@ -195,16 +195,14 @@ class planer(object):
                 ptime = time() - starttime
                 plotter(t, i, epos, espeed, sumt, rms, ptime)
 
-            # Oscilation detection
+            # If oscilation (repeated change of epos sign) is detected we have to reduce self.timestep to break inf loop.  
             epossign = copysign(1, epos)
-            # print(epossign)
             if epossign != prevepossign:
                 osccounter += 1
                 prevepossign = epossign
             if osccounter > 100:
                 self.timestep = self.timestep / 2
                 print(f"Oscilation! Reduced timestep to: {self.timestep}")
-                # sleep(2)
                 osccounter = 0
                 if resetonoscil:
                     t = [0, 0, 0, 0, 0, 0, 0]
@@ -212,19 +210,16 @@ class planer(object):
 
             if epos > self.postarget:
                 # Rise jerk time
-                if (
-                    t[0] < self.maxacc / self.jerk
-                    and self.integrate(t[0:3], vin)[1] < self.maxspeed
-                ):
+                speed3 = self.integrate(t[0:3], vin)[1]
+                if t[0] < self.maxacc / self.jerk and speed3 < self.maxspeed:
                     t[0] += self.timestep
                     t[2] = t[0]
-                elif self.integrate(t[0:3], vin)[1] < self.maxspeed:
+                # Rise acc time
+                elif speed3 < self.maxspeed:
                     t[1] += self.timestep
+                # Rise travel time
                 else:
                     t[3] += self.timestep
-                # Rise acc time
-
-                # Rise travel time
 
             elif epos < -self.postarget:
                 # Lower travel time
